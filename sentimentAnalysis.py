@@ -1,12 +1,16 @@
 import pandas as pd
 import re
 from afinn import Afinn
+import nltk
+nltk.download('vader_lexicon')
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 import seaborn as sns
 
 af = Afinn()
+sid = SentimentIntensityAnalyzer()
 
 tickers = []
 file = open('tickers.txt', 'r')
@@ -37,8 +41,6 @@ def deEmojify(text):
         "]+", flags=re.UNICODE)
     return regrex_pattern.sub(r'',text)
 
-
-
 reddit_wsb_df = pd.read_csv("reddit_wsb.csv")
 reddit_wsb_df = reddit_wsb_df.dropna()
 
@@ -65,6 +67,33 @@ for body in bodies_list:
 titles_sentiment_scores = [af.score(title) for title in titles_list]
 bodies_sentiment_scores = [af.score(body) for body in bodies_list]
 
-sentiment_df = pd.DataFrame({'Title': titles_list, 'Title Tickers': all_title_tickers, 'Title Sentiment': titles_sentiment_scores, 'Body': bodies_list, 'Body Tickers': all_body_tickers, 'Body Sentiment': bodies_sentiment_scores})
+titles_polarity_scores = [sid.polarity_scores(title) for title in titles_list]
+bodies_polarity_scores = [sid.polarity_scores(body) for body in bodies_list]
+
+titles_polarity_scores_neg = [score['neg'] for score in titles_polarity_scores]
+titles_polarity_scores_neu = [score['neu'] for score in titles_polarity_scores]
+titles_polarity_scores_pos = [score['pos'] for score in titles_polarity_scores]
+titles_polarity_scores_compound = [score['compound'] for score in titles_polarity_scores]
+
+bodies_polarity_scores_neg = [score['neg'] for score in bodies_polarity_scores]
+bodies_polarity_scores_neu = [score['neu'] for score in bodies_polarity_scores]
+bodies_polarity_scores_pos = [score['pos'] for score in bodies_polarity_scores]
+bodies_polarity_scores_compound = [score['compound'] for score in bodies_polarity_scores]
+
+sentiment_df = pd.DataFrame({'Title': titles_list,
+                             'Title S&P 500 Tickers': all_title_tickers,
+                             'Title Sentiment Score': titles_sentiment_scores,
+                             'Title Negative Score': titles_polarity_scores_neg,
+                             'Title Neutral Score': titles_polarity_scores_neu,
+                             'Title Positive Score': titles_polarity_scores_pos,
+                             'Title Compound Score': titles_polarity_scores_compound,
+                             'Body': bodies_list,
+                             'Body S&P 500 Tickers': all_body_tickers,
+                             'Body Sentiment': bodies_sentiment_scores,
+                             'Body Negative Score': bodies_polarity_scores_neg,
+                             'Body Neutral Score': bodies_polarity_scores_neu,
+                             'Body Positive Score': bodies_polarity_scores_pos,
+                             'Body Compound Score': bodies_polarity_scores_compound,
+                             })
 
 sentiment_df
