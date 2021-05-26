@@ -81,14 +81,14 @@ bodies_polarity_scores_pos = [score['pos'] for score in bodies_polarity_scores]
 bodies_polarity_scores_compound = [score['compound'] for score in bodies_polarity_scores]
 
 sentiment_df = pd.DataFrame({'Title': titles_list,
-                             'Title S&P 500 Tickers': all_title_tickers,
+                             'Title S&P 500 + GME Tickers': all_title_tickers,
                              'Title Sentiment Score': titles_sentiment_scores,
                              'Title Negative Score': titles_polarity_scores_neg,
                              'Title Neutral Score': titles_polarity_scores_neu,
                              'Title Positive Score': titles_polarity_scores_pos,
                              'Title Compound Score': titles_polarity_scores_compound,
                              'Body': bodies_list,
-                             'Body S&P 500 Tickers': all_body_tickers,
+                             'Body S&P 500 + GME Tickers': all_body_tickers,
                              'Body Sentiment': bodies_sentiment_scores,
                              'Body Negative Score': bodies_polarity_scores_neg,
                              'Body Neutral Score': bodies_polarity_scores_neu,
