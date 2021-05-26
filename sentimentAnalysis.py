@@ -97,3 +97,5 @@ sentiment_df = pd.DataFrame({'Title': titles_list,
                              })
 
 sentiment_df
+
+sentiment_df.to_csv('sa.zip', index=False)
