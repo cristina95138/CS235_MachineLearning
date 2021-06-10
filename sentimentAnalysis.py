@@ -52,6 +52,7 @@ for title in titles_list:
     split_title = title.split()
     if set(split_title) & set(tickers):
         title_tickers = set(split_title) & set(tickers)
+        title_tickers = ', '.join(title_tickers)
     all_title_tickers.append(title_tickers)
 
 bodies = reddit_wsb_df['body']
@@ -62,7 +63,9 @@ for body in bodies_list:
     split_body = body.split()
     if set(split_body) & set(tickers):
         body_tickers = set(split_body) & set(tickers)
+        body_tickers = ', '.join(body_tickers)
     all_body_tickers.append(body_tickers)
+
 
 titles_sentiment_scores = [af.score(title) for title in titles_list]
 bodies_sentiment_scores = [af.score(body) for body in bodies_list]
@@ -80,20 +83,20 @@ bodies_polarity_scores_neu = [score['neu'] for score in bodies_polarity_scores]
 bodies_polarity_scores_pos = [score['pos'] for score in bodies_polarity_scores]
 bodies_polarity_scores_compound = [score['compound'] for score in bodies_polarity_scores]
 
-sentiment_df = pd.DataFrame({'Title': titles_list,
-                             'Title S&P 500 + GME Tickers': all_title_tickers,
+
+sentiment_df = pd.DataFrame({'Title S&P 500 + GME Tickers': all_title_tickers,
                              'Title Sentiment Score': titles_sentiment_scores,
                              'Title Negative Score': titles_polarity_scores_neg,
                              'Title Neutral Score': titles_polarity_scores_neu,
                              'Title Positive Score': titles_polarity_scores_pos,
                              'Title Compound Score': titles_polarity_scores_compound,
-                             'Body': bodies_list,
                              'Body S&P 500 + GME Tickers': all_body_tickers,
                              'Body Sentiment': bodies_sentiment_scores,
                              'Body Negative Score': bodies_polarity_scores_neg,
                              'Body Neutral Score': bodies_polarity_scores_neu,
                              'Body Positive Score': bodies_polarity_scores_pos,
                              'Body Compound Score': bodies_polarity_scores_compound,
+                             'Timestamp': reddit_wsb_df['timestamp']
                              })
 
 sentiment_df
