@@ -51,7 +51,7 @@ for title in titles_list:
     title_tickers = []
     split_title = title.split()
     if set(split_title) & set(tickers):
-        title_tickers.append(set(split_title) & set(tickers))
+        title_tickers = set(split_title) & set(tickers)
     all_title_tickers.append(title_tickers)
 
 bodies = reddit_wsb_df['body']
@@ -61,7 +61,7 @@ for body in bodies_list:
     body_tickers = []
     split_body = body.split()
     if set(split_body) & set(tickers):
-        body_tickers.append(set(split_body) & set(tickers))
+        body_tickers = set(split_body) & set(tickers)
     all_body_tickers.append(body_tickers)
 
 titles_sentiment_scores = [af.score(title) for title in titles_list]
