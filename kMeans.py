@@ -75,12 +75,14 @@ GME_Body_April = GME_Body.loc[GME_Body['Timestamp'].str.contains("2021-04")]
 GME_Body_May = GME_Body.loc[GME_Body['Timestamp'].str.contains("2021-05")]
 
 GME_Jan = data_gme.loc[data_gme['Date'].str.contains("2021-01")]
+GME_Jan.apply(pd.to_numeric, errors='ignore')
 GME_Feb = data_gme.loc[data_gme['Date'].str.contains("2021-02")]
 GME_March = data_gme.loc[data_gme['Date'].str.contains("2021-03")]
 GME_April = data_gme.loc[data_gme['Date'].str.contains("2021-04")]
 GME_May = data_gme.loc[data_gme['Date'].str.contains("2021-05")]
+GME_May = GME_May.apply(pd.to_numeric, errors='ignore')
 
-pslenVals = (data[['Title Sentiment Score', 'petal_length']].values).tolist()
+pslenVals = (GME_May[['Open', 'Close']].values).tolist()
 assignments, centroids, all_sse, iters = kmeans_clustering(pslenVals,3,max_iter = 100, tol = pow(10,-3))
 clust = []
 
@@ -88,5 +90,7 @@ for cnt,len in enumerate(pslenVals):
     index = assignments[cnt]
     clust.append((len[0], len[1], index))
 
-df = pd.DataFrame(clust, columns=['sepal_length', 'petal_length', 'cluster'])
-plot = sb.scatterplot(x="sepal_length", y="petal_length", data=df, hue="cluster", palette="Set2")
+df = pd.DataFrame(clust, columns=['Open', 'Close', 'cluster'])
+plot = sb.scatterplot(x="Open", y="Close", data=df, hue="cluster", palette="Set2")
+
+plt.show()
