@@ -1,5 +1,4 @@
 # CS235_MachineLearning
-* Bullet list
 * GME.csv : csv file for GME stock
 * reddit_wsb.csv: csv file containing information regarding reddit posts in r/WSB
 * s-and-p-500-companies-financials_zip/data/constituents-financials_csv.csv: contain financial data from [Datahub](https://datahub.io/core/s-and-p-500-companies-financials#data)
